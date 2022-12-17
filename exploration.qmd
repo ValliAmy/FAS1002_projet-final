@@ -7,9 +7,9 @@ description: |
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
-  - name: "Prénom Nom"
+  - name: "Amy Vallières"
     # Votre site web perso ou github
-    url: https://github.com/VOTREUSERNAME
+    url: https://github.com/VallieAmy
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002

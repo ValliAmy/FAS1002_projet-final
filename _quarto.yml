@@ -10,7 +10,7 @@ website:
 
   reader-mode: true
 # URL de votre site une fois publié - <VOTREUSERNAME> à changer 
-  site-url: https://VOTREUSERNAME.github.io/FAS1002_projet-final/
+  site-url: https://ValliAmy.github.io/FAS1002_projet-final/
 # URL de votre répertoire - VOTREUSERNAME/VOTRE-RÉPERTOIRE à changer
   repo-url: https://github.com/VOTREUSERNAME/VOTRE-RÉPERTOIRE/
   repo-actions: [edit, issue, source]
