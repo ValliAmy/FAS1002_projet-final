@@ -99,6 +99,12 @@ graphique_co2_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = co2_per_capi
 graphique_co2_pib_1990
 ```
 
+#### Analyse des deux graphiques
+
+En général, on peut constater que les émissions de CO2 par unité de PIB ont diminué dans la plupart des continents depuis 1990. Cela peut être attribué à une baisse de la dépendance aux énergies fossiles et à une augmentation de l'efficacité énergétique dans de nombreux pays.
+
+Ce qui est intéressant, aussi, c'est de constater que les points sont légèrement plus dispersé en 1990 qu'en 2016, ce qui laisse sous-entendre que certains pays ont plus accès aux énergies fossiles et/ou que les pays plus riches les utilise moins.
+
 ### Densité de la population selon les émissions de CO2 par habitant par continent en 2016
 
 ```{r}
@@ -110,16 +116,18 @@ co2_2016 <- ggplot(data = data_co2_2016, aes(x = co2_per_capita, fill = continen
 co2_2016
 ```
 
-### 
+#### Analyse du graphique
 
-### Évolution des émissions de CO2 depuis 1850 selon les différents continents
+Ce qui est intéressant avec ce graphique, c'est de constater que plus la densité est élevée, peu importe le continent, moins la quantitié de CO2 par habitant est faible. Cela est probablement dû au fait que dans les grandes villes (lorsque la densité est élevée), les personnes ont plus facilement accès aux transports en commun alors que dans les régions, les personnes sont souvent plus dépendantes de leur(s) voiture(s) et ont souvent de plus grandes distances à parcourir. C'est intéressant de constater que ce phénomène s'observe peu importe le continent en sachant que ce phénomène est plus prononcé en Afrique.
+
+### Évolution des émissions de CO2 depuis 1850 selon les différents pays
 
 ```{r}
 graph_evol_co2 <- ggplot(data = data_co2, aes(x=year, y=co2)) +
     geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
     theme_light() +
     labs(color = "Pays") +
-    labs(title = "Évolution des émissions de CO2 depuis 1850 selon les continents", x="Année", y="CO2")
+    labs(title = "Évolution des émissions de CO2 depuis 1850 selon les pays", x="Année", y="CO2")
 graph_evol_co2 
 ```
 
@@ -152,6 +160,12 @@ graphique_ene_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = energy_per_c
 graphique_ene_pib_1990
 ```
 
+#### Analyse des deux graphiques
+
+En général, on peut constater que l'énergie par unité de PIB a diminué dans la plupart des continents depuis 1990.
+
+Ce qui est intéressant, comme pour le CO2 c'est de constater que les points sont légèrement plus dispersé en 1990 qu'en 2016, ce qui laisse sous-entendre que certains pays ont plus accès aux énergies fossiles et/ou que les pays plus riches les utilise moins. En bref, il y a peut-être un peu plus d'égalité entre les différents continents, bien que les pays du Nord (les pays industrialisés) restent les plus grands consommateurs d'énergie et émetteurs de CO2 (de GES en général).
+
 ### Évolution de l'espérance de vie moyenne selon les continents à travers le temps
 
 ```{r}
@@ -178,6 +192,13 @@ life_expectancy <- ggplot(data = graph, aes(x = as.numeric(year), y = mean, colo
 life_expectancy
 ```
 
+#### Analyse de l'espérance de vie selon le continent
+
+On voit que l'espérance de vie a considérablement augmenté pour tous les continents.
+Cette augmentation peut être attribuée à l'amélioration des conditions de vie, de l'accès aux soins de santé et à l'éducation, ainsi qu'à la réduction de la mortalité infantile, surtout pour l'Afrique, l'Amérique latine ainsi que l'Asie. Pour l'Amérique du Nord ainsi que l'Europe et l'Océanie, c'est le même phénomène.
+
+Aussi, il y a plusieurs raisons pour expliquer le pic de baisse de l'espérance de vie qu'on observe entre 1915 et 1925. Tout d'abord, la Première Guerre mondiale a eu un impact considérable sur l'espérance de vie dans de nombreux pays, car elle a entraîné la mort de millions de soldats et de civils. De plus, la guerre a eu des conséquences économiques et sociales importantes, notamment une baisse de la qualité de vie et de l'accès aux soins de santé pour de nombreuses personnes. D'ailleurs, c'est un peu avant 1920 qu'il y a eu l'épidémie de la grippe espagnole qui pourrait être un facteur qui explique cette chute soudaine de l'espérance de vie sur tous les continents.
+
 ### Évolution des émission de CO2 en moyenne selon les continents à travers le temps
 
 ```{r}
@@ -203,3 +224,9 @@ co2_per_gdp <- ggplot(data = graph_co2, aes(x = as.numeric(year), y = mean, colo
 
 co2_per_gdp
 ```
+
+#### Analyse de l'évolution des émissions de CO2 dans le temps par continent
+
+On voit que généralement, les émissions de CO2 ont augmenté dans les continents bien qu'une baisse s'observe depuis environ 1990. L'augmentation qu'on peut apercevoir peut être attribué à l'industrialisation des pays en règles générales. La baisse qu'on peut apercevoir par la suite peut être attribué à une prise de conscience mondiale des changements climatiques et de ses conséquences. En 1990, c'était aussi le début des Conventions des Parties, communément appelé COP.
+
+Il est important de noter que malgré les augmentation et les baisses, l'Afrique reste en dessous des autres continents et on peut aussi voir que l'Asie a connu une énorme augmentation qu'on peut attribuer aau développement économique de la Chine, notamment.
