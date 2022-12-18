@@ -150,3 +150,21 @@ Voici un tableau qui présente un codebook adapté du codebook original (https:/
 | oil_co2_per_capita    | Mesure annuelle de la production de CO2 générée par le pétrole, mesurée en million de tonnes par personnes (numérique) \|                                                                                                                                    |
 |                       | \| ghg_per_capita \| Total des émissions de gas à effet de serres par personne, mesuré en tonne de de millions, incluant l'UTCATF (numérique)                                                                                                                |
 | trade_co2             | Total annuel des émissions de C02, issu du commerce, mesuré en million de tonne. (Ici une valeur positive veut dire qu'un pays est un importeur net d'émission de CO2 ; une valeur négative veut dire qu'un pays est un exporteur net d'émission de CO2).    |
+
+### Analyse des données descriptives
+
+```{r}
+summary(dat_co2)
+```
+
+-   Les données comprennent des informations sur la population, le PIB, les émissions de CO2 et d'autres gaz à effet de serre, ainsi que les émissions de ciment pour 46523 pays à différentes années allant de 1750 à 2021.
+
+-   Certaines données sont manquantes pour certains pays et certaines années, avec un nombre important de valeurs manquantes pour les colonnes liées aux émissions de CO2 et aux autres gaz à effet de serre.
+
+-   La population varie considérablement entre les pays, avec des valeurs allant de 21 à 790 millions d'habitants. Le PIB varie également considérablement, avec des valeurs allant de 4,998 milliards à 1136 trillions de dollars.
+
+-   Les émissions de CO2 varient considérablement entre les pays et les années, avec des valeurs allant de 0 à 37123,85 millions de tonnes. Les émissions de ciment par habitant varient également, avec des valeurs allant de 0 à 2,574 tonnes par habitant.
+
+-   Les autres colonnes liées aux émissions de gaz à effet de serre présentent également une grande variabilité. Par exemple, les émissions de charbon varient de 0 à 15051,513 millions de tonnes, les émissions de gaz varient de 0 à 7921,830 millions de tonnes et les émissions de méthane varient de 0 à 8609,92 millions de tonnes.
+
+-   Les émissions de gaz à effet de serre par habitant varient de -30,81 à 53,311 tonnes par habitant, tandis que les émissions liées aux échanges commerciaux varient de -2354,78 à 2386,68 millions de tonnes.
