@@ -2,7 +2,7 @@
 title: "Exploration des données"
 title-block-banner: false
 description: | 
-  Petite description de cette page.
+  Exploration des données, graphiques et analyses.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez

@@ -10,9 +10,8 @@ website:
 
   reader-mode: true
 # URL de votre site une fois publié - <VOTREUSERNAME> à changer 
-  site-url: https://VOTREUSERNAME.github.io/FAS1002_projet-final/
+  site-url: https://ValliAmy.github.io/FAS1002_projet-final/
 # URL de votre répertoire - VOTREUSERNAME/VOTRE-RÉPERTOIRE à changer
-  repo-url: https://github.com/VOTREUSERNAME/VOTRE-RÉPERTOIRE/
   repo-actions: [edit, issue, source]
   
 # Options à changer pour le menu ou la barre de navigation
@@ -28,7 +27,7 @@ website:
         text: Page d'accueil
       - intro.qmd
       - href: import.qmd
-        text: Titre à changer
+        text: Importation et statistiques
       - exploration.qmd
     right:
       - href: a-propos.qmd
@@ -40,8 +39,8 @@ website:
       [Propulsé par des logiciels libres 💖](https://github.com/FAS1002/A22){.nav-link}
     center:
     # Changer VOTRE NOM pour ce que vous voulez
-      - text: "VOTRE NOM"
-        href: mailto:VOTRECOURRIEL@example.com
+      - text: "Amy Vallières"
+        href: mailto:amy.vallieres@umontreal.ca
     right:
       - icon: github
         href: https://github.com/FAS1002/

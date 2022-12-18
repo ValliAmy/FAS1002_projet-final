@@ -2,7 +2,7 @@
 title: "Co2 et Energy dans le monde"
 title-block-banner: true
 description: | 
-  Quelques petites analyses et exploration des émissions de Co2 dans le temps et sleon certaines années..
+  Quelques petites analyses et exploration des émissions de Co2 dans le temps et selon certaines années..
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
@@ -25,9 +25,27 @@ citation: true
 bibliography: references.bib
 ---
 
-Il est maintenant le temps de décrire votre projet avant de passer au document suivant, soit l'importation et la manipulation des données.
+#### Importation des données
 
-Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs fois.
+Tout d'abord, on a commencé par importer les données. Une fonction a été créée pour télécharger la banque de données de *CO2 and Greenhouse Gaz Emission* de façon quotidienne. Pour la banque de données *Life Expectancy at Birth*, le téléchargement se fait tous les mois.
+
+Dans le but de faciliter les analyses, une variable continent a été créer.
+
+Il y a, aussi, une analyse des données descriptives de certaines variables pertinentes qui ont été sélectionnées sur la page d'importation.2
+
+#### Exploration et analyse
+
+Pour ce qui est de l'exploration des données, on s'est surtout penché sur les émissions de CO2, la consommation d'énergie selon le pib et selon le temps.
+
+On effectue une analyse des données sur les émissions de CO2 par continent. On commence par calculer plusieurs statistiques sommaires pour chaque continent, telles que la moyenne, la médiane, l'écart-type, le maximum et le minimum, pour différentes variables, telles que le PIB, la population, les émissions de CO2, les émissions de CO2 par habitant, les émissions de CO2 par unité de PIB et l'énergie par habitant et par unité de PIB.
+
+Ensuite, on génère deux graphiques qui illustrent l'évolution des émissions de CO2 par unité de PIB par continent entre 1990 et 2016. Il est intéressant de noter que les émissions de CO2 par unité de PIB ont diminué dans la plupart des continents depuis 1990, ce qui peut être attribué à une baisse de la dépendance aux énergies fossiles et à une augmentation de l'efficacité énergétique dans de nombreux pays. Le but était de faire une comparaison entre 1990 et 2016 puisque c'est lors des années 1990 que le monde a eu une prise de conscience importante par rapport à l'environnement.
+
+On génère également deux autres graphiques qui illustrent la densité de la population par continent en fonction des émissions de CO2 par habitant en 2016 et en 1990. Ces graphiques montrent que la plupart des continents ont des densités de population plus élevées pour les niveaux d'émissions de CO2 par habitant plus faibles. Cela peut être expliqué par le fait que les pays ayant des émissions de CO2 par habitant plus faibles ont tendance à avoir des populations plus importantes.
+
+Enfin, on génère un graphique qui montre l'évolution des émissions de CO2 par habitant par continent entre 1990 et 2016. Ce graphique montre que les émissions de CO2 par habitant ont augmenté dans la plupart des continents depuis 1990, bien que la croissance soit plus lente dans certains continents que dans d'autres.
+
+On s'intéresse, aussi, brièvement à l'espérance de vie à travers le temps selon les continents.
 
 ::: callout-important
 N'oubliez pas d'inclure vos références sur chacune des pages!
