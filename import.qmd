@@ -38,12 +38,6 @@ Par exemple:
 > Les données proviennent entre autres de @owidenergy.
 
 ```{r}
-source("utils.R")
-data <- get_raw_data()
-
-# get contient data
-countries_by_continent <- read.csv("ISO-3166-Countries-with-Regional-Codes.csv")
-countries_by_continent <- countries_by_continent[c("alpha.3", "region")]
-colnames(countries_by_continent) <- c("iso_code", "contient")
-merge(data, countries_by_continent, by = 'iso_code')
+source("continent.R")
+data_continent
 ```
