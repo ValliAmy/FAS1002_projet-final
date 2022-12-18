@@ -1,5 +1,5 @@
 ---
-title: "Titre de votre page d'exploration"
+title: "Exploration des données"
 title-block-banner: false
 description: | 
   Petite description de cette page.
@@ -73,4 +73,132 @@ fig
 
 ------------------------------------------------------------------------
 
-À votre imagination de jouer!
+```{r}
+library(lubridate)
+library(fs)
+library(vtable)
+library(ggplot2)
+library(countrycode)
+```
+
+```{r}
+source("helper.R")
+data_co2 <- get_raw_data()
+data_co2 <- data_co2 |> 
+    mutate(continent = countrycode(sourcevar = data_co2$country,
+                                   origin = "country.name",
+                                   destination = "continent"))
+```
+
+## Statistiques
+
+### Statistiques selon les continents
+
+```{r}
+ sumtable(data_co2,
+         summ=c('mean(x)',
+                'median(x)',
+                'sd(x)',
+                'max(x)',
+                'min(x)'),
+         vars= c('gdp',
+                 'population',
+                 'co2',
+                 'co2_per_capita',
+                 'co2_per_gdp',
+                 'energy_per_capita',
+                 'energy_per_gdp'),
+         group="continent",
+         title="Statistiques sommaires selon les continents") 
+```
+
+```{r}
+knitr::include_graphics("figures/Rplot.png")
+```
+
+## Des graphiques
+
+### Émissions de Co2 selon le pib par continent en 2016 et 1990
+
+Il faut commencer par sélectionner la valeur 2016 de la variable "year'" dans notre ensemble de données afin de faire une analyse des émissions de Co2 selon le PIB par continent en 2016 précisemment.
+
+```{r}
+data_co2_2016 <- filter(data_co2, year == "2016")
+```
+
+```{r}
+graphique_co2_pib <- ggplot(data=data_co2_2016, aes(x=gdp, y = co2_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution des émissions de CO2 par PIB en fonction du PIB en 2016", x="PIB", y="CO2", caption = "Données tirées de World in Data") + theme_light()
+graphique_co2_pib
+```
+
+Il faut sélectionner la valeur 1990 de la variable "year'" dans notre ensemble de données afin de faire une analyse des émissions de Co2 selon le PIB par continent en 1990 précisemment.
+
+```{r}
+data_co2_1990 <- filter(data_co2, year == "1990")
+```
+
+```{r}
+graphique_co2_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = co2_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution des émissions de CO2 par PIB en fonction du PIB en 1990", x="PIB", y="CO2", caption = "Données tirées de World in Data") + theme_light()
+graphique_co2_pib_1990
+```
+
+### Densité de la population selon les émissions de CO2 par habitant par continent
+
+```{r}
+co2_2016 <- ggplot(data = data_co2_2016, aes(x = co2_per_capita, fill = continent)) +
+    geom_density(position="stack") +
+    theme_light() +
+    labs(title = "2016", x="CO2 par habitant", y="Densité d'habitants", caption = "Données tirées de World in Data : Co2 and Greenhouse Gaz Emission")+
+    scale_x_continuous(limits=c(0,25))
+co2_2016
+```
+
+### 
+
+### Évolution des émissions de CO2 depuis 1850 selon les différents continents
+
+```{r}
+graph_evol_co2 <- ggplot(data = data_co2, aes(x=year, y=co2)) +
+    geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
+    theme_light() +
+    labs(color = "Pays") +
+    labs(title = "Évolution des émissions de CO2 depuis 1850 selon les continents", x="Année", y="CO2")
+graph_evol_co2 
+```
+
+### Évolution de la population depuis 1850 selon les différents continents
+
+```{r}
+graph_evol_pop <- ggplot(data = data_co2, aes(x=year, y=population)) +
+    geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
+    theme_light()+ labs(color = "Pays") +
+    labs(title = " Évolution de la population depuis 1850 selon les continents", x="Année", y="Population",
+         caption = "Données tirées de World in Data : Co2 and Greenhouse Gaz Emission")
+graph_evol_pop
+```
+
+### Évolution de l'énergie selon le pib en 2016  et 1990 selon les différents continents
+
+```{r}
+graphique_ene_pib <- ggplot(data=data_co2_2016, aes(x=gdp, y = energy_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution de l'énergie par PIB en fonction du PIB en 2016", x="PIB", y="Energy", caption = "Données tirées de World in Data : CO2 and Greenhouse Gaz Emissions") + theme_light()
+graphique_ene_pib
+```
+
+```{r}
+graphique_ene_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = energy_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution de l'énergie par PIB en fonction du PIB en 1990", x="PIB", y="CO2", caption = "Données tirées de World in Data : CO2 and Greenhouse Gaz Emissions") + theme_light()
+graphique_ene_pib_1990
+```
+
+### 
