@@ -9,7 +9,7 @@ date: "2022-12-21"
 author:
   - name: "Amy Vallières"
     # Votre site web perso ou github
-    url: https://github.com/VOTREUSERNAME
+    url: https://github.com/ValliAmy
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002
@@ -38,6 +38,78 @@ Par exemple:
 > Les données proviennent entre autres de @owidenergy.
 
 ```{r}
-source("continent.R")
-data_continent
+library(tidyverse)
+library(fs)
+library(lubridate)
+library(skimr)
+library(countrycode)
+library(gsheet)
+library(httr)
+```
+
+### Les données *Our World in Data*
+
+|     | J'utilise en premier la banque de données du \*Co2 and Greenhouse Gaz Emissions\*. Celle-ci sera mis à jour à tous les jours. |
+|-----------|------------------------------------------------------------|
+|     | Les données proviennent \[d'ici\](https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv).                  |
+
+```{r}
+source("helper.R")
+data_co2 <- get_raw_data()
+```
+
+###  Les données *Gapminder*
+
+Pour la deuxième banque de données, je fais appel à celle produite par \*Gapminder\* qui se nomme \*Life Expectancy at Birth\*. Celle-ci seront re-téléchargé pour une mise à jour à tous les mois.
+
+```{r}
+url_gapminder <-  "https://docs.google.com/spreadsheets/d/1RheSon1-q4vFc3AGyupVPH6ptEByE-VtnjOCselU0PE/edit#gid=176703676"
+sheet_gapminder <- gsheet2tbl(url_gapminder)
+base_path <- path("data", "raw")
+fname_gap <- paste(today(), "gapm.csv", sep = "_")
+fpath_gap <- path(base_path, fname_gap)
+write.csv(sheet_gapminder, "sheet_gapminder.csv")
+data_gapminder <- read_csv(fpath_gap)
+```
+
+### Création d'une variable
+
+Nous allons créer la variable continent pour les deux banques de données pour faciliter les analyses.
+
+```{r}
+data_co2 <- data_co2 |> 
+    mutate(continent = countrycode(sourcevar = data_co2$country,
+                                   origin = "country.name",
+                                   destination = "continent"))
+
+
+sheet_gapminder <- sheet_gapminder |> 
+    mutate(continent = countrycode(sourcevar = sheet_gapminder$name,
+                                   origin = "country.name",
+                                   destination = "continent"))
+```
+
+### Recoder des variables
+
+Les variables des deux banques de données n'ont pas le même nom, on va donc changer la variable *name* de gapminder par *country*
+
+```{r}
+sheet_gapminder <- sheet_gapminder |> 
+    rename(country = name,
+           year = time)
+```
+
+```{r}
+ #dat <- full_join(sheet_gapminder,
+ #                 data_co2,
+ #                 by = "country")
+```
+
+## Exporter les données
+
+Exporter les données qui sont traités dans le dossier data/processed
+
+```{r}
+write_csv(data_co2,file = "data/processed/data_co2.csv")
+write_csv(sheet_gapminder, file = "data/processed/sheet_gapminder.csv")
 ```
