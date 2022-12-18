@@ -1,8 +1,8 @@
 ---
-title: "Titre de votre page d'importation"
+title: "Les données"
 title-block-banner: true
 description: | 
-  Petite description de cette page.
+  Cette page regroupe la première importation des données ainsi que les manipulation de bases.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
@@ -47,18 +47,21 @@ library(gsheet)
 library(httr)
 ```
 
-**\### Les données *Our World in Data***
+## Importer les données
 
-J'utilise en premier la banque de données du \\\*Co2 and Greenhouse Gaz Emissions\\\*. Celle-ci sera mis à jour à tous les jours.
+### Les données *Our World in Data*
 
-Les données proviennent de : https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv).
+J'utilise en premier la banque de données du *Co2 and Greenhouse Gaz Emissions*. Mise à jour tous les jours.
+
+Les données proviennent de :
+https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
 
 ```{r}
 source("helper.R")
 data_co2 <- get_raw_data()
 ```
 
-### Les données *Gapminder*
+### Données gapminder
 
 Pour la deuxième banque de données, je fais appel à celle produite par *Gapminder* qui se nomme *Life Expectancy at Birth*. Celle-ci seront re-téléchargé pour une mise à jour à tous les mois.
 
@@ -104,3 +107,5 @@ Exporter les données qui sont traités dans le dossier data/processed.
 write_csv(data_co2,file = "data/processed/data_co2.csv")
 write_csv(sheet_gapminder, file = "data/processed/sheet_gapminder.csv")
 ```
+
+## 
