@@ -148,7 +148,7 @@ graphique_co2_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = co2_per_capi
 graphique_co2_pib_1990
 ```
 
-### Densité de la population selon les émissions de CO2 par habitant par continent
+### Densité de la population selon les émissions de CO2 par habitant par continent en 2016
 
 ```{r}
 co2_2016 <- ggplot(data = data_co2_2016, aes(x = co2_per_capita, fill = continent)) +
@@ -201,4 +201,28 @@ graphique_ene_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = energy_per_c
 graphique_ene_pib_1990
 ```
 
-### 
+### Évolution de l'espérance de vie moyenne selon les continents à travers le temps
+
+```{r}
+graph <- sheet_gapminder |> 
+    group_by(continent,
+             year) |> 
+    summarise(mean = mean(`Life expectancy`, na.rm = T))
+
+life_expectancy <- ggplot(data = graph, aes(x = as.numeric(year), y = mean, color = continent)) +
+    geom_line(stat = "identity") +
+    scale_x_continuous(n.breaks = 12) +
+    scale_color_discrete(name = "Continents",
+                         labels = c("Afrique",
+                                    "Amériques",
+                                    "Asie",
+                                    "Europe",
+                                    "Océanie")) +
+    theme_bw() + 
+    labs(title = "Évolution de l'espérance de vie par continent",
+         source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
+         x = " ",
+         y = " ")
+
+life_expectancy
+```
