@@ -7,7 +7,7 @@ description: |
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
-  - name: "Prénom Nom"
+  - name: "Amy Vallières"
     # Votre site web perso ou github
     url: https://github.com/VOTREUSERNAME
     # les champs d'affiliation sont optionnels, vous pouvez les
@@ -25,52 +25,6 @@ citation: true
 bibliography: references.bib
 ---
 
-## Un peu d'interactivité pour le plaisir!
-
-```{r map}
-library(leaflet)
-leaflet() %>%
-    setView(lng=150,
-            lat=-30,
-            zoom = 3) %>%
-    addTiles() %>%
-    addMarkers(lng=174.768,
-               lat=-36.852,
-               popup="Là où R est né") %>%
-    addProviderTiles(providers$Esri.WorldGrayCanvas)
-```
-
-## Peut-être que ça vous inspirera!
-
-```{r plotly, message=FALSE, warning=FALSE}
-library(plotly)
-library(gapminder)
-df <- gapminder
-
-fig <- df %>%
-  plot_ly(
-    x = ~ gdpPercap,
-    y = ~ lifeExp,
-    size = ~ pop,
-    color = ~ continent,
-    frame = ~ year,
-    text = ~ country,
-    hoverinfo = "text",
-    type = 'scatter',
-    mode = 'markers',
-    width = "100%",
-    height = 600
-  )
-
-fig <- fig %>% layout(xaxis = list(type = "log"))
-
-fig <- fig %>%
-  animation_button(
-    x = 0, xanchor = "left", y = -0.15, yanchor = "bottom"
-  )
-fig
-```
-
 ------------------------------------------------------------------------
 
 ```{r}
@@ -79,15 +33,12 @@ library(fs)
 library(vtable)
 library(ggplot2)
 library(countrycode)
+library(tidyverse)
 ```
 
 ```{r}
-source("helper.R")
-data_co2 <- get_raw_data()
-data_co2 <- data_co2 |> 
-    mutate(continent = countrycode(sourcevar = data_co2$country,
-                                   origin = "country.name",
-                                   destination = "continent"))
+data_co2 <- read_csv("data/processed/data_co2.csv", show_col_types = FALSE)
+sheet_gapminder <- read_csv("data/processed/sheet_gapminder.csv", show_col_types = FALSE)
 ```
 
 ## Statistiques
@@ -183,7 +134,7 @@ graph_evol_pop <- ggplot(data = data_co2, aes(x=year, y=population)) +
 graph_evol_pop
 ```
 
-### Évolution de l'énergie selon le pib en 2016  et 1990 selon les différents continents
+### Évolution de l'énergie selon le pib en 2016 et 1990 selon les différents continents
 
 ```{r}
 graphique_ene_pib <- ggplot(data=data_co2_2016, aes(x=gdp, y = energy_per_capita, color = continent)) +
@@ -218,11 +169,37 @@ life_expectancy <- ggplot(data = graph, aes(x = as.numeric(year), y = mean, colo
                                     "Asie",
                                     "Europe",
                                     "Océanie")) +
-    theme_bw() + 
+    theme_light() + 
     labs(title = "Évolution de l'espérance de vie par continent",
          source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
          x = " ",
          y = " ")
 
 life_expectancy
+```
+
+### Évolution des émission de CO2 en moyenne selon les continents à travers le temps
+
+```{r}
+graph_co2 <- data_co2 |> 
+    group_by(continent,
+             year) |> 
+    summarise(mean = mean(`co2_per_gdp`, na.rm = T))
+
+co2_per_gdp <- ggplot(data = graph_co2, aes(x = as.numeric(year), y = mean, color = continent)) +
+    geom_line(stat = "identity") +
+    scale_x_continuous(n.breaks = 12) +
+    scale_color_discrete(name = "Continents",
+                         labels = c("Afrique",
+                                    "Amériques",
+                                    "Asie",
+                                    "Europe",
+                                    "Océanie")) +
+    theme_light() + 
+    labs(title = "Évolution du Co2 selon le pib dans le temps",
+         source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
+         x = " ",
+         y = " ")
+
+co2_per_gdp
 ```
