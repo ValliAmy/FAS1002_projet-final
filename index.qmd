@@ -2,11 +2,7 @@
 title: "Projet final pour le cours FAS1002"
 ---
 
-Vous pouvez faire le résumé de votre projet directement sur cette page et utiliser le document [intro](intro.qmd) pour décrire votre projet.
-
-Chaque page est en fait un fichier Quarto standard. [^1]
-
-[^1]: Avec des petits trucs sympa comme des notes de bas de page. Ces documents sont les mêmes que nous avons utilisés tout au long de la session.
+Il s'agit d'une analyse de données sur les émissions de CO2 par continent. L'objectif est de comprendre comment les émissions de CO2 ont évolué au cours des années et comment elles sont distribuées géographiquement. Pour ce faire, plusieurs statistiques sommaires sont calculées pour chaque continent, ainsi que des graphiques qui illustrent l'évolution des émissions de CO2 par unité de PIB, la densité de la population en fonction des émissions de CO2 par habitant et l'évolution des émissions de CO2 par habitant au cours du temps. Les résultats montrent que les émissions de CO2 par unité de PIB ont diminué dans la plupart des continents depuis 1990, que la plupart des continents ont des densités de population plus élevées pour les niveaux d'émissions de CO2 par habitant plus faibles et que les émissions de CO2 par habitant ont augmenté dans la plupart des continents depuis 1990. L'analyse inclut également une brève exploration de l'espérance de vie au cours du temps selon les continents.
 
 ## Vous pourrez inclure des graphiques
 
