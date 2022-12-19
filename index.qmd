@@ -16,7 +16,7 @@ data_co2_2016 <- filter(data_co2, year == "2016")
 data_co2_1990 <- filter(data_co2, year == "1990")
 # Créer le graphique
 ggplot(data = data_co2_2016, aes(x = continent, y = co2_per_capita, fill = continent)) +
-geom_pie(stat = "identity") +
+geom_bar(stat = "identity") +
   labs(x = "Continent", y = "Emissions de CO2 par habitant", title = "Émissions de CO2 par habitant pour chaque continent en 2016",
        fill = "continent") +
   theme(plot.title = element_text(hjust = 0.5))

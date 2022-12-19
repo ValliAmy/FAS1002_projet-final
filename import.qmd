@@ -53,8 +53,7 @@ library(httr)
 
 J'utilise en premier la banque de données du *Co2 and Greenhouse Gaz Emissions*. Mise à jour tous les jours.
 
-Les données proviennent de :
-https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
+Les données proviennent de : https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
 
 ```{r}
 source("helper.R")
@@ -131,25 +130,25 @@ dat_co2 = data_co2 %>%
 
 Voici un tableau qui présente un codebook adapté du codebook original (https://github.com/owid/co2-data/blob/master/owid-co2-codebook.csv) dans le but de mieux comprendre les 18 variables choisies.
 
-| Variables             | Description + Type                                                                                                                                                                                                                                           |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|                       |                                                                                                                                                                                                                                                              |
-| Country               | pays (character)                                                                                                                                                                                                                                             |
-| Year                  | année de l'observation (numérique)                                                                                                                                                                                                                           |
-| Iso_code              | code du pays selon la codification internationale 3166-1 (character)                                                                                                                                                                                         |
-| Population            | Nombre total de la population selon le pays (numérique)                                                                                                                                                                                                      |
-| GDP (PIB)             | Produit interieur brut mesuré en dollars (numérique)                                                                                                                                                                                                         |
-| CO2                   | Mesure annuelle de la production totale de CO2 par pays, mesuré en en millions de tonnes et excluant l'\[UTCATF\](https://fr.wikipedia.org/wiki/Utilisation_des_terres,\_changement_d'affectation_des_terres_et_foresterie) (numérique)                      |
-| Cement_CO2_per_capita | Mesure annuelle de la production totale de CO2 générée par le ciment, par personne, en millions de tonnes (numérique)                                                                                                                                        |
-| CO2_per_gdp           | Mesure annuelle de la production totale de CO2 selon le PIB, excluant l'UTCATF (numérique)                                                                                                                                                                   |
-| coal_co2              | Mesure annuelle par pays de la production de CO2 générée par le charbon, en millions de tonnes (numérique)                                                                                                                                                   |
-| coal_co2_per_capita   | Mesure annuelle de la production de CO2 générée par le charbon, mesurée en million de tonnes par personnes (numérique)                                                                                                                                       |
-| methane               | Total annuel des émissions de méthane par pays, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                                  |
-| methane_per_capita    | Total annuel des émissions de méthane par habitant, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                              |
-| oil_co2               | Mesure annuelle par pays de la production de CO2 générée par le pétrole, en millions de tonnes (numérique)                                                                                                                                                   |
-| oil_co2_per_capita    | Mesure annuelle de la production de CO2 générée par le pétrole, mesurée en million de tonnes par personnes (numérique) \|                                                                                                                                    |
-|                       | \| ghg_per_capita \| Total des émissions de gas à effet de serres par personne, mesuré en tonne de de millions, incluant l'UTCATF (numérique)                                                                                                                |
-| trade_co2             | Total annuel des émissions de C02, issu du commerce, mesuré en million de tonne. (Ici une valeur positive veut dire qu'un pays est un importeur net d'émission de CO2 ; une valeur négative veut dire qu'un pays est un exporteur net d'émission de CO2).    |
+| Variables             | Description + Type                                                                                                                                                                                                                                        |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                       |                                                                                                                                                                                                                                                           |
+| Country               | pays (character)                                                                                                                                                                                                                                          |
+| Year                  | année de l'observation (numérique)                                                                                                                                                                                                                        |
+| Iso_code              | code du pays selon la codification internationale 3166-1 (character)                                                                                                                                                                                      |
+| Population            | Nombre total de la population selon le pays (numérique)                                                                                                                                                                                                   |
+| GDP (PIB)             | Produit interieur brut mesuré en dollars (numérique)                                                                                                                                                                                                      |
+| CO2                   | Mesure annuelle de la production totale de CO2 par pays, mesuré en en millions de tonnes et excluant l'\[UTCATF\](https://fr.wikipedia.org/wiki/Utilisation_des_terres,\_changement_d'affectation_des_terres_et_foresterie) (numérique)                   |
+| Cement_CO2_per_capita | Mesure annuelle de la production totale de CO2 générée par le ciment, par personne, en millions de tonnes (numérique)                                                                                                                                     |
+| CO2_per_gdp           | Mesure annuelle de la production totale de CO2 selon le PIB, excluant l'UTCATF (numérique)                                                                                                                                                                |
+| coal_co2              | Mesure annuelle par pays de la production de CO2 générée par le charbon, en millions de tonnes (numérique)                                                                                                                                                |
+| coal_co2_per_capita   | Mesure annuelle de la production de CO2 générée par le charbon, mesurée en million de tonnes par personnes (numérique)                                                                                                                                    |
+| methane               | Total annuel des émissions de méthane par pays, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                               |
+| methane_per_capita    | Total annuel des émissions de méthane par habitant, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                           |
+| oil_co2               | Mesure annuelle par pays de la production de CO2 générée par le pétrole, en millions de tonnes (numérique)                                                                                                                                                |
+| oil_co2_per_capita    | Mesure annuelle de la production de CO2 générée par le pétrole, mesurée en million de tonnes par personnes (numérique) \|                                                                                                                                 |
+|                       | \| ghg_per_capita \| Total des émissions de gas à effet de serres par personne, mesuré en tonne de de millions, incluant l'UTCATF (numérique)                                                                                                             |
+| trade_co2             | Total annuel des émissions de C02, issu du commerce, mesuré en million de tonne. (Ici une valeur positive veut dire qu'un pays est un importeur net d'émission de CO2 ; une valeur négative veut dire qu'un pays est un exporteur net d'émission de CO2). |
 
 ### Analyse des données descriptives
 
@@ -177,6 +176,7 @@ merged_data <- dplyr::inner_join(data_co2, sheet_gapminder) %>%
 ```
 
 #### 
+
 Créer un csv pour les données
 
 ```{r}
@@ -184,6 +184,3 @@ write.csv(merged_data, "data/raw/merged_data.csv", row.names=FALSE)
 ```
 
 #### 
-
-
-
