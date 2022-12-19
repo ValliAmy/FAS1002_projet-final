@@ -41,11 +41,11 @@ data_co2 <- read_csv("data/processed/data_co2.csv", show_col_types = FALSE)
 sheet_gapminder <- read_csv("data/processed/sheet_gapminder.csv", show_col_types = FALSE)
 ```
 
-#### Temps écoulé en jours 
+#### Temps écoulé en jours
 
 ```{r}
 library(lubridate)
-LifeExDate <- sheet_gapminder %>%
+Life_Ex_Date <- sheet_gapminder %>%
 mutate(jour_mois = "-01-01") %>% #ajouter une colonne avec -MM-DD
     unite(year, jour_mois, col = year, sep = "") %>% #combiner les deux colonnes
     mutate(year_as_date = as.Date(year, format = "%Y-%m-%d")) #transformer en format de date
@@ -140,23 +140,23 @@ Ce qui est intéressant avec ce graphique, c'est de constater que plus la densit
 ### Évolution des émissions de CO2 depuis 1850 selon les différents pays
 
 ```{r}
-graph_evol_co2 <- ggplot(data = data_co2, aes(x=year, y=co2)) +
+graphique_evol_co2 <- ggplot(data = data_co2, aes(x=year, y=co2)) +
     geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
     theme_light() +
     labs(color = "Pays") +
     labs(title = "Évolution des émissions de CO2 depuis 1850 selon les pays", x="Année", y="CO2")
-graph_evol_co2 
+graphique_evol_co2 
 ```
 
 ### Évolution de la population depuis 1850 selon les différents continents
 
 ```{r}
-graph_evol_pop <- ggplot(data = data_co2, aes(x=year, y=population)) +
+graphique_evol_pop <- ggplot(data = data_co2, aes(x=year, y=population)) +
     geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
     theme_light()+ labs(color = "Pays") +
     labs(title = " Évolution de la population depuis 1850 selon les continents", x="Année", y="Population",
          caption = "Données tirées de World in Data : Co2 and Greenhouse Gaz Emission")
-graph_evol_pop
+graphique_evol_pop
 ```
 
 ### Évolution de l'énergie selon le pib en 2016 et 1990 selon les différents continents
