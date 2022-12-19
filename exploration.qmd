@@ -41,6 +41,23 @@ data_co2 <- read_csv("data/processed/data_co2.csv", show_col_types = FALSE)
 sheet_gapminder <- read_csv("data/processed/sheet_gapminder.csv", show_col_types = FALSE)
 ```
 
+#### Temps écoulé en jours 
+
+```{r}
+library(lubridate)
+LifeExDate <- sheet_gapminder %>%
+mutate(jour_mois = "-01-01") %>% #ajouter une colonne avec -MM-DD
+    unite(year, jour_mois, col = year, sep = "") %>% #combiner les deux colonnes
+    mutate(year_as_date = as.Date(year, format = "%Y-%m-%d")) #transformer en format de date
+    
+nb_jours <- as.numeric(difftime(as.POSIXct(today()), 
+                    as.POSIXct(as.Date(min(LifeExDate$year_as_date), format = "%Y-%m-%d"))))
+
+nb_jours
+```
+
+Il y a 81 435 jours qui se sont écoulé entre le temps écoulé en jours entre la production (rendering) de ce rapport et la première année que les données ont été récoltées pour chacun des pays qui se trouvent dans le jeu de données de *Life Expectancy at Birth*.
+
 ## Statistiques
 
 ### Statistiques selon les continents
@@ -194,8 +211,7 @@ life_expectancy
 
 #### Analyse de l'espérance de vie selon le continent
 
-On voit que l'espérance de vie a considérablement augmenté pour tous les continents.
-Cette augmentation peut être attribuée à l'amélioration des conditions de vie, de l'accès aux soins de santé et à l'éducation, ainsi qu'à la réduction de la mortalité infantile, surtout pour l'Afrique, l'Amérique latine ainsi que l'Asie. Pour l'Amérique du Nord ainsi que l'Europe et l'Océanie, c'est le même phénomène.
+On voit que l'espérance de vie a considérablement augmenté pour tous les continents. Cette augmentation peut être attribuée à l'amélioration des conditions de vie, de l'accès aux soins de santé et à l'éducation, ainsi qu'à la réduction de la mortalité infantile, surtout pour l'Afrique, l'Amérique latine ainsi que l'Asie. Pour l'Amérique du Nord ainsi que l'Europe et l'Océanie, c'est le même phénomène.
 
 Aussi, il y a plusieurs raisons pour expliquer le pic de baisse de l'espérance de vie qu'on observe entre 1915 et 1925. Tout d'abord, la Première Guerre mondiale a eu un impact considérable sur l'espérance de vie dans de nombreux pays, car elle a entraîné la mort de millions de soldats et de civils. De plus, la guerre a eu des conséquences économiques et sociales importantes, notamment une baisse de la qualité de vie et de l'accès aux soins de santé pour de nombreuses personnes. D'ailleurs, c'est un peu avant 1920 qu'il y a eu l'épidémie de la grippe espagnole qui pourrait être un facteur qui explique cette chute soudaine de l'espérance de vie sur tous les continents.
 
