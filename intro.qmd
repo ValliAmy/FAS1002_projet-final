@@ -57,4 +57,4 @@ N'oubliez pas d'inclure vos références sur chacune des pages!
 
 Par exemple:
 
-> Les données proviennent entre autres de @owidenergy.
+> Les données proviennent entre autres de @owidco2andothergreenhousegasemissions et @lifeexp
