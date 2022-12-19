@@ -51,10 +51,8 @@ Le graphique qui montre l'évolution des émissions de CO2 par habitant par cont
 
 Enfin, l'analyse de l'espérance de vie à la naissance permet de voir comment cette variable a évolué au fil du temps et comment elle a varié selon les continents. Cela peut permettre de mieux comprendre les facteurs qui influencent l'espérance de vie à la naissance et de développer des stratégies pour améliorer la santé et la qualité de vie de la population.
 
-::: callout-important
-N'oubliez pas d'inclure vos références sur chacune des pages!
-:::
+#### Les références
 
-Par exemple:
+Gapminder. s. d. « Life Expectancy at Birth \| Gapminder ». https://www.gapminder.org/data/documentation/gd004/.
 
-> Les données proviennent entre autres de @owidco2andothergreenhousegasemissions et @lifeexp
+Ritchie, Hannah, Max Roser, et Pablo Rosado. 2020. « CO₂ and Greenhouse Gas Emissions ». Our World in Data.
