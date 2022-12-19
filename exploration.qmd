@@ -51,7 +51,7 @@ mutate(jour_mois = "-01-01") %>% #ajouter une colonne avec -MM-DD
     mutate(year_as_date = as.Date(year, format = "%Y-%m-%d")) #transformer en format de date
     
 nb_jours <- as.numeric(difftime(as.POSIXct(today()), 
-                    as.POSIXct(as.Date(min(LifeExDate$year_as_date), format = "%Y-%m-%d"))))
+                    as.POSIXct(as.Date(min(Life_Ex_Date$year_as_date), format = "%Y-%m-%d"))))
 
 nb_jours
 ```
