@@ -168,3 +168,13 @@ summary(dat_co2)
 -   Les autres colonnes liées aux émissions de gaz à effet de serre présentent également une grande variabilité. Par exemple, les émissions de charbon varient de 0 à 15051,513 millions de tonnes, les émissions de gaz varient de 0 à 7921,830 millions de tonnes et les émissions de méthane varient de 0 à 8609,92 millions de tonnes.
 
 -   Les émissions de gaz à effet de serre par habitant varient de -30,81 à 53,311 tonnes par habitant, tandis que les émissions liées aux échanges commerciaux varient de -2354,78 à 2386,68 millions de tonnes.
+
+#### Les références
+
+@gapminder
+
+@owidco2andothergreenhousegasemissions
+
+Gapminder. s. d. « Life Expectancy at Birth \| Gapminder ». https://www.gapminder.org/data/documentation/gd004/.
+
+Ritchie, Hannah, Max Roser, et Pablo Rosado. 2020. « CO₂ and Greenhouse Gas Emissions ». Our World in Data.
