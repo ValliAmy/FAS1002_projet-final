@@ -1,15 +1,15 @@
 ---
-title: "Titre de votre page d'exploration"
+title: "Exploration des données"
 title-block-banner: false
 description: | 
-  Petite description de cette page.
+  Exploration des données, graphiques et analyses.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
   - name: "Amy Vallières"
     # Votre site web perso ou github
-    url: https://github.com/VallieAmy
+    url: https://github.com/VOTREUSERNAME
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002
@@ -25,52 +25,230 @@ citation: true
 bibliography: references.bib
 ---
 
-## Un peu d'interactivité pour le plaisir!
-
-```{r map}
-library(leaflet)
-leaflet() %>%
-    setView(lng=150,
-            lat=-30,
-            zoom = 3) %>%
-    addTiles() %>%
-    addMarkers(lng=174.768,
-               lat=-36.852,
-               popup="Là où R est né") %>%
-    addProviderTiles(providers$Esri.WorldGrayCanvas)
-```
-
-## Peut-être que ça vous inspirera!
-
-```{r plotly, message=FALSE, warning=FALSE}
-library(plotly)
-library(gapminder)
-df <- gapminder
-
-fig <- df %>%
-  plot_ly(
-    x = ~ gdpPercap,
-    y = ~ lifeExp,
-    size = ~ pop,
-    color = ~ continent,
-    frame = ~ year,
-    text = ~ country,
-    hoverinfo = "text",
-    type = 'scatter',
-    mode = 'markers',
-    width = "100%",
-    height = 600
-  )
-
-fig <- fig %>% layout(xaxis = list(type = "log"))
-
-fig <- fig %>%
-  animation_button(
-    x = 0, xanchor = "left", y = -0.15, yanchor = "bottom"
-  )
-fig
-```
-
 ------------------------------------------------------------------------
 
-À votre imagination de jouer!
+```{r}
+library(lubridate)
+library(fs)
+library(vtable)
+library(ggplot2)
+library(countrycode)
+library(tidyverse)
+```
+
+```{r}
+data_co2 <- read_csv("data/processed/data_co2.csv", show_col_types = FALSE)
+sheet_gapminder <- read_csv("data/processed/sheet_gapminder.csv", show_col_types = FALSE)
+```
+
+#### Temps écoulé en jours
+
+```{r}
+library(lubridate)
+Life_Ex_Date <- sheet_gapminder %>%
+mutate(jour_mois = "-01-01") %>% #ajouter une colonne avec -MM-DD
+    unite(year, jour_mois, col = year, sep = "") %>% #combiner les deux colonnes
+    mutate(year_as_date = as.Date(year, format = "%Y-%m-%d")) #transformer en format de date
+    
+nb_jours <- as.numeric(difftime(as.POSIXct(today()), 
+                    as.POSIXct(as.Date(min(Life_Ex_Date$year_as_date), format = "%Y-%m-%d"))))
+
+nb_jours
+```
+
+Il y a 81 435 jours qui se sont écoulé entre le temps écoulé en jours entre la production (rendering) de ce rapport et la première année que les données ont été récoltées pour chacun des pays qui se trouvent dans le jeu de données de *Life Expectancy at Birth*.
+
+## Statistiques
+
+### Statistiques selon les continents
+
+```{r}
+ sumtable(data_co2,
+         summ=c('mean(x)',
+                'median(x)',
+                'sd(x)',
+                'max(x)',
+                'min(x)'),
+         vars= c('gdp',
+                 'population',
+                 'co2',
+                 'co2_per_capita',
+                 'co2_per_gdp',
+                 'energy_per_capita',
+                 'energy_per_gdp'),
+         group="continent",
+         title="Statistiques sommaires selon les continents") 
+```
+
+```{r}
+knitr::include_graphics("figures/Rplot.png")
+```
+
+## Des graphiques
+
+### Émissions de Co2 selon le pib par continent en 2016 et 1990
+
+Il faut commencer par sélectionner la valeur 2016 de la variable "year'" dans notre ensemble de données afin de faire une analyse des émissions de Co2 selon le PIB par continent en 2016 précisemment.
+
+```{r}
+data_co2_2016 <- filter(data_co2, year == "2016")
+```
+
+```{r}
+graphique_co2_pib <- ggplot(data=data_co2_2016, aes(x=gdp, y = co2_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution des émissions de CO2 par PIB en fonction du PIB en 2016", x="PIB", y="CO2", caption = "Données tirées de World in Data") + theme_light()
+graphique_co2_pib
+```
+
+Il faut sélectionner la valeur 1990 de la variable "year'" dans notre ensemble de données afin de faire une analyse des émissions de Co2 selon le PIB par continent en 1990 précisemment.
+
+```{r}
+data_co2_1990 <- filter(data_co2, year == "1990")
+```
+
+```{r}
+graphique_co2_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = co2_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution des émissions de CO2 par PIB en fonction du PIB en 1990", x="PIB", y="CO2", caption = "Données tirées de World in Data") + theme_light()
+graphique_co2_pib_1990
+```
+
+#### Analyse des deux graphiques
+
+En général, on peut constater que les émissions de CO2 par unité de PIB ont diminué dans la plupart des continents depuis 1990. Cela peut être attribué à une baisse de la dépendance aux énergies fossiles et à une augmentation de l'efficacité énergétique dans de nombreux pays.
+
+Ce qui est intéressant, aussi, c'est de constater que les points sont légèrement plus dispersé en 1990 qu'en 2016, ce qui laisse sous-entendre que certains pays ont plus accès aux énergies fossiles et/ou que les pays plus riches les utilise moins.
+
+### Densité de la population selon les émissions de CO2 par habitant par continent en 2016
+
+```{r}
+co2_2016 <- ggplot(data = data_co2_2016, aes(x = co2_per_capita, fill = continent)) +
+    geom_density(position="stack") +
+    theme_light() +
+    labs(title = "2016", x="CO2 par habitant", y="Densité d'habitants", caption = "Données tirées de World in Data : Co2 and Greenhouse Gaz Emission")+
+    scale_x_continuous(limits=c(0,25))
+co2_2016
+```
+
+#### Analyse du graphique
+
+Ce qui est intéressant avec ce graphique, c'est de constater que plus la densité est élevée, peu importe le continent, moins la quantitié de CO2 par habitant est faible. Cela est probablement dû au fait que dans les grandes villes (lorsque la densité est élevée), les personnes ont plus facilement accès aux transports en commun alors que dans les régions, les personnes sont souvent plus dépendantes de leur(s) voiture(s) et ont souvent de plus grandes distances à parcourir. C'est intéressant de constater que ce phénomène s'observe peu importe le continent en sachant que ce phénomène est plus prononcé en Afrique.
+
+### Évolution des émissions de CO2 depuis 1850 selon les différents pays
+
+```{r}
+graphique_evol_co2 <- ggplot(data = data_co2, aes(x=year, y=co2)) +
+    geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
+    theme_light() +
+    labs(color = "Pays") +
+    labs(title = "Évolution des émissions de CO2 depuis 1850 selon les pays", x="Année", y="CO2")
+graphique_evol_co2 
+```
+
+### Évolution de la population depuis 1850 selon les différents continents
+
+```{r}
+graphique_evol_pop <- ggplot(data = data_co2, aes(x=year, y=population)) +
+    geom_line(aes(color=country),size = 1.2) + xlim(1850, 2020) +
+    theme_light()+ labs(color = "Pays") +
+    labs(title = " Évolution de la population depuis 1850 selon les continents", x="Année", y="Population",
+         caption = "Données tirées de World in Data : Co2 and Greenhouse Gaz Emission")
+graphique_evol_pop
+```
+
+### Évolution de l'énergie selon le pib en 2016 et 1990 selon les différents continents
+
+```{r}
+graphique_ene_pib <- ggplot(data=data_co2_2016, aes(x=gdp, y = energy_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution de l'énergie par PIB en fonction du PIB en 2016", x="PIB", y="Energy", caption = "Données tirées de World in Data : CO2 and Greenhouse Gaz Emissions") + theme_light()
+graphique_ene_pib
+```
+
+```{r}
+graphique_ene_pib_1990 <- ggplot(data=data_co2_1990, aes(x=gdp, y = energy_per_capita, color = continent)) +
+    geom_point()+ scale_x_continuous(trans = "log10")+
+    scale_y_continuous(trans = "log10") +
+    labs(title = "Évolution de l'énergie par PIB en fonction du PIB en 1990", x="PIB", y="CO2", caption = "Données tirées de World in Data : CO2 and Greenhouse Gaz Emissions") + theme_light()
+graphique_ene_pib_1990
+```
+
+#### Analyse des deux graphiques
+
+En général, on peut constater que l'énergie par unité de PIB a diminué dans la plupart des continents depuis 1990.
+
+Ce qui est intéressant, comme pour le CO2 c'est de constater que les points sont légèrement plus dispersé en 1990 qu'en 2016, ce qui laisse sous-entendre que certains pays ont plus accès aux énergies fossiles et/ou que les pays plus riches les utilise moins. En bref, il y a peut-être un peu plus d'égalité entre les différents continents, bien que les pays du Nord (les pays industrialisés) restent les plus grands consommateurs d'énergie et émetteurs de CO2 (de GES en général).
+
+### Évolution de l'espérance de vie moyenne selon les continents à travers le temps
+
+```{r}
+graph <- sheet_gapminder |> 
+    group_by(continent,
+             year) |> 
+    summarise(mean = mean(`Life expectancy`, na.rm = T))
+
+life_expectancy <- ggplot(data = graph, aes(x = as.numeric(year), y = mean, color = continent)) +
+    geom_line(stat = "identity") +
+    scale_x_continuous(n.breaks = 12) +
+    scale_color_discrete(name = "Continents",
+                         labels = c("Afrique",
+                                    "Amériques",
+                                    "Asie",
+                                    "Europe",
+                                    "Océanie")) +
+    theme_light() + 
+    labs(title = "Évolution de l'espérance de vie par continent", x="Année", y="Âge/Epérance de vie",
+         source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
+         x = " ",
+         y = " ")
+
+life_expectancy
+```
+
+#### Analyse de l'espérance de vie selon le continent
+
+On voit que l'espérance de vie a considérablement augmenté pour tous les continents. Cette augmentation peut être attribuée à l'amélioration des conditions de vie, de l'accès aux soins de santé et à l'éducation, ainsi qu'à la réduction de la mortalité infantile, surtout pour l'Afrique, l'Amérique latine ainsi que l'Asie. Pour l'Amérique du Nord ainsi que l'Europe et l'Océanie, c'est le même phénomène.
+
+Aussi, il y a plusieurs raisons pour expliquer le pic de baisse de l'espérance de vie qu'on observe entre 1915 et 1925. Tout d'abord, la Première Guerre mondiale a eu un impact considérable sur l'espérance de vie dans de nombreux pays, car elle a entraîné la mort de millions de soldats et de civils. De plus, la guerre a eu des conséquences économiques et sociales importantes, notamment une baisse de la qualité de vie et de l'accès aux soins de santé pour de nombreuses personnes. D'ailleurs, c'est un peu avant 1920 qu'il y a eu l'épidémie de la grippe espagnole qui pourrait être un facteur qui explique cette chute soudaine de l'espérance de vie sur tous les continents.
+
+### Évolution des émission de CO2 en moyenne selon les continents à travers le temps
+
+```{r}
+graph_co2 <- data_co2 |> 
+    group_by(continent,
+             year) |> 
+    summarise(mean = mean(`co2_per_gdp`, na.rm = T))
+
+co2_per_gdp <- ggplot(data = graph_co2, aes(x = as.numeric(year), y = mean, color = continent)) +
+    geom_line(stat = "identity") +
+    scale_x_continuous(n.breaks = 12) +
+    scale_color_discrete(name = "Continents",
+                         labels = c("Afrique",
+                                    "Amériques",
+                                    "Asie",
+                                    "Europe",
+                                    "Océanie")) +
+    theme_light() + 
+    labs(title = "Évolution du Co2 selon le pib dans le temps", x="Année", y="CO2/PIB",
+         source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
+         x = " ",
+         y = " ")
+
+co2_per_gdp
+```
+
+#### Analyse de l'évolution des émissions de CO2 dans le temps par continent
+
+On voit que généralement, les émissions de CO2 ont augmenté dans les continents bien qu'une baisse s'observe depuis environ 1990. L'augmentation qu'on peut apercevoir peut être attribué à l'industrialisation des pays en règles générales. La baisse qu'on peut apercevoir par la suite peut être attribué à une prise de conscience mondiale des changements climatiques et de ses conséquences. En 1990, c'était aussi le début des Conventions des Parties, communément appelé COP.
+
+Il est important de noter que malgré les augmentation et les baisses, l'Afrique reste en dessous des autres continents et on peut aussi voir que l'Asie a connu une énorme augmentation qu'on peut attribuer aau développement économique de la Chine, notamment.
+
+#### Les références
+
+Gapminder. s. d. « Life Expectancy at Birth \| Gapminder ». https://www.gapminder.org/data/documentation/gd004/.
+
+Ritchie, Hannah, Max Roser, et Pablo Rosado. 2020. « CO₂ and Greenhouse Gas Emissions ». Our World in Data.
