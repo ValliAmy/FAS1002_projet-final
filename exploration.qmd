@@ -81,7 +81,7 @@ Il y a 81 435 jours qui se sont écoulé entre le temps écoulé en jours entre 
 ```
 
 ```{r}
-knitr::include_graphics("figures/Rplot.png")
+#knitr::include_graphics("figures/Rplot.png")
 ```
 
 ## Des graphiques
