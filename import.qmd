@@ -1,15 +1,15 @@
 ---
-title: "Titre de votre page d'importation"
+title: "Les données"
 title-block-banner: true
 description: | 
-  Petite description de cette page.
+  Cette page regroupe la première importation des données ainsi que les manipulation de bases.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
   - name: "Amy Vallières"
     # Votre site web perso ou github
-    url: https://github.com/ValliAmy
+    url: https://github.com/VOTREUSERNAME
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002
@@ -47,20 +47,22 @@ library(gsheet)
 library(httr)
 ```
 
+## Importer les données
+
 ### Les données *Our World in Data*
 
-|     | J'utilise en premier la banque de données du \*Co2 and Greenhouse Gaz Emissions\*. Celle-ci sera mis à jour à tous les jours. |
-|-----------|------------------------------------------------------------|
-|     | Les données proviennent \[d'ici\](https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv).                  |
+J'utilise en premier la banque de données du *Co2 and Greenhouse Gaz Emissions*. Mise à jour tous les jours.
+
+Les données proviennent de : https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
 
 ```{r}
 source("helper.R")
 data_co2 <- get_raw_data()
 ```
 
-###  Les données *Gapminder*
+### Données gapminder
 
-Pour la deuxième banque de données, je fais appel à celle produite par \*Gapminder\* qui se nomme \*Life Expectancy at Birth\*. Celle-ci seront re-téléchargé pour une mise à jour à tous les mois.
+Pour la deuxième banque de données, je fais appel à celle produite par *Gapminder* qui se nomme *Life Expectancy at Birth*. Celle-ci seront re-téléchargé pour une mise à jour à tous les mois.
 
 ```{r}
 url_gapminder <-  "https://docs.google.com/spreadsheets/d/1RheSon1-q4vFc3AGyupVPH6ptEByE-VtnjOCselU0PE/edit#gid=176703676"
@@ -69,7 +71,6 @@ base_path <- path("data", "raw")
 fname_gap <- paste(today(), "gapm.csv", sep = "_")
 fpath_gap <- path(base_path, fname_gap)
 write.csv(sheet_gapminder, "sheet_gapminder.csv")
-data_gapminder <- read_csv(fpath_gap)
 ```
 
 ### Création d'une variable
@@ -81,17 +82,15 @@ data_co2 <- data_co2 |>
     mutate(continent = countrycode(sourcevar = data_co2$country,
                                    origin = "country.name",
                                    destination = "continent"))
-
-
 sheet_gapminder <- sheet_gapminder |> 
     mutate(continent = countrycode(sourcevar = sheet_gapminder$name,
                                    origin = "country.name",
                                    destination = "continent"))
 ```
 
-### Recoder des variables
+### Recoder les variables
 
-Les variables des deux banques de données n'ont pas le même nom, on va donc changer la variable *name* de gapminder par *country*
+Les variables des deux banques de données n'ont pas le même nom, on va donc changer la variable *name* de gapminder par *country*.
 
 ```{r}
 sheet_gapminder <- sheet_gapminder |> 
@@ -99,17 +98,90 @@ sheet_gapminder <- sheet_gapminder |>
            year = time)
 ```
 
-```{r}
- #dat <- full_join(sheet_gapminder,
- #                 data_co2,
- #                 by = "country")
-```
-
 ## Exporter les données
 
-Exporter les données qui sont traités dans le dossier data/processed
+Exporter les données qui sont traités dans le dossier data/processed.
 
 ```{r}
 write_csv(data_co2,file = "data/processed/data_co2.csv")
 write_csv(sheet_gapminder, file = "data/processed/sheet_gapminder.csv")
 ```
+
+## 
+
+## Manipulation des données
+
+La base de données *Co2 and Greenhouse Gaz Emissions* contient un total de 46523 observations ainsi que 74 variables, avant l'ajout de la variable continent. Cette base de données permet de mieux comprendre les soucres d'énergies et leur consommation dans un total de 207 pays.
+
+Dans le but d'obtenir une lecture plus intéressante ainsi qu'une analyse des données, il est plus simple de traiter la base de données avec quelques variables sélectionnés et non pas dans sa totalité. Pour se faire, 18 variables sont sélectionnées.
+
+Mais avant, pour faciliter les autres analyses, on va transformer les données en tibble :avec les 18 variables choisies.
+
+```{r}
+as.tibble(data_co2)
+```
+
+```{r}
+dat_co2 = data_co2 %>% 
+    select(country, year, iso_code, population, gdp, co2, cement_co2_per_capita, 
+           co2_per_gdp, coal_co2, coal_co2_per_capita, gas_co2, gas_co2_per_capita,
+           methane, methane_per_capita, oil_co2, oil_co2_per_capita, ghg_per_capita, trade_co2)
+```
+
+Voici un tableau qui présente un codebook adapté du codebook original (https://github.com/owid/co2-data/blob/master/owid-co2-codebook.csv) dans le but de mieux comprendre les 18 variables choisies.
+
+| Variables             | Description + Type                                                                                                                                                                                                                                        |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                       |                                                                                                                                                                                                                                                           |
+| Country               | pays (character)                                                                                                                                                                                                                                          |
+| Year                  | année de l'observation (numérique)                                                                                                                                                                                                                        |
+| Iso_code              | code du pays selon la codification internationale 3166-1 (character)                                                                                                                                                                                      |
+| Population            | Nombre total de la population selon le pays (numérique)                                                                                                                                                                                                   |
+| GDP (PIB)             | Produit interieur brut mesuré en dollars (numérique)                                                                                                                                                                                                      |
+| CO2                   | Mesure annuelle de la production totale de CO2 par pays, mesuré en en millions de tonnes et excluant l'\[UTCATF\](https://fr.wikipedia.org/wiki/Utilisation_des_terres,\_changement_d'affectation_des_terres_et_foresterie) (numérique)                   |
+| Cement_CO2_per_capita | Mesure annuelle de la production totale de CO2 générée par le ciment, par personne, en millions de tonnes (numérique)                                                                                                                                     |
+| CO2_per_gdp           | Mesure annuelle de la production totale de CO2 selon le PIB, excluant l'UTCATF (numérique)                                                                                                                                                                |
+| coal_co2              | Mesure annuelle par pays de la production de CO2 générée par le charbon, en millions de tonnes (numérique)                                                                                                                                                |
+| coal_co2_per_capita   | Mesure annuelle de la production de CO2 générée par le charbon, mesurée en million de tonnes par personnes (numérique)                                                                                                                                    |
+| methane               | Total annuel des émissions de méthane par pays, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                               |
+| methane_per_capita    | Total annuel des émissions de méthane par habitant, incluant l'UTCATF, mesuré en millions de tonnes (numérique)                                                                                                                                           |
+| oil_co2               | Mesure annuelle par pays de la production de CO2 générée par le pétrole, en millions de tonnes (numérique)                                                                                                                                                |
+| oil_co2_per_capita    | Mesure annuelle de la production de CO2 générée par le pétrole, mesurée en million de tonnes par personnes (numérique) \|                                                                                                                                 |
+|                       | \| ghg_per_capita \| Total des émissions de gas à effet de serres par personne, mesuré en tonne de de millions, incluant l'UTCATF (numérique)                                                                                                             |
+| trade_co2             | Total annuel des émissions de C02, issu du commerce, mesuré en million de tonne. (Ici une valeur positive veut dire qu'un pays est un importeur net d'émission de CO2 ; une valeur négative veut dire qu'un pays est un exporteur net d'émission de CO2). |
+
+### Analyse des données descriptives
+
+```{r}
+summary(dat_co2)
+```
+
+-   Les données comprennent des informations sur la population, le PIB, les émissions de CO2 et d'autres gaz à effet de serre, ainsi que les émissions de ciment pour 46523 pays à différentes années allant de 1750 à 2021.
+
+-   Certaines données sont manquantes pour certains pays et certaines années, avec un nombre important de valeurs manquantes pour les colonnes liées aux émissions de CO2 et aux autres gaz à effet de serre.
+
+-   La population varie considérablement entre les pays, avec des valeurs allant de 21 à 790 millions d'habitants. Le PIB varie également considérablement, avec des valeurs allant de 4,998 milliards à 1136 trillions de dollars.
+
+-   Les émissions de CO2 varient considérablement entre les pays et les années, avec des valeurs allant de 0 à 37123,85 millions de tonnes. Les émissions de ciment par habitant varient également, avec des valeurs allant de 0 à 2,574 tonnes par habitant.
+
+-   Les autres colonnes liées aux émissions de gaz à effet de serre présentent également une grande variabilité. Par exemple, les émissions de charbon varient de 0 à 15051,513 millions de tonnes, les émissions de gaz varient de 0 à 7921,830 millions de tonnes et les émissions de méthane varient de 0 à 8609,92 millions de tonnes.
+
+-   Les émissions de gaz à effet de serre par habitant varient de -30,81 à 53,311 tonnes par habitant, tandis que les émissions liées aux échanges commerciaux varient de -2354,78 à 2386,68 millions de tonnes.
+
+## Combiner les deux banques de données
+
+```{r}
+merged_data <- dplyr::inner_join(data_co2, sheet_gapminder) %>%
+  arrange(iso_code, year, country)
+```
+
+#### 
+
+Créer un csv pour les données
+
+```{r}
+write.csv(merged_data, "data/raw/merged_data.csv", row.names=FALSE)
+```
+
+#### 
+
