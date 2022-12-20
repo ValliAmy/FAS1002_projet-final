@@ -1,8 +1,8 @@
 ---
-title: "Titre de votre page d'introduction"
+title: "Co2 et Energy dans le monde"
 title-block-banner: true
 description: | 
-  Petite description de votre projet en une ligne.
+  Quelques petites analyses et exploration des émissions de Co2 dans le temps et selon certaines années..
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
@@ -25,14 +25,34 @@ citation: true
 bibliography: references.bib
 ---
 
-Il est maintenant le temps de décrire votre projet avant de passer au document suivant, soit l'importation et la manipulation des données.
+#### Importation des données
 
-Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs fois.
+Tout d'abord, on a commencé par importer les données. Une fonction a été créée pour télécharger la banque de données de *CO2 and Greenhouse Gaz Emission* de façon quotidienne. Pour la banque de données *Life Expectancy at Birth*, le téléchargement se fait tous les mois.
 
-::: callout-important
-N'oubliez pas d'inclure vos références sur chacune des pages!
-:::
+Dans le but de faciliter les analyses, une variable continent a été créer.
 
-Par exemple:
+L'analyse des données descriptives consiste à examiner différentes caractéristiques statistiques de certaines variables sélectionnées, afin de comprendre les tendances et les patterns présents dans les données. Dans le cas de l'analyse des émissions de CO2 par continent, les statistiques sommaires telles que la moyenne, la médiane, l'écart-type, le maximum et le minimum peuvent être calculées pour différentes variables liées aux émissions de CO2, comme le PIB, la population, les émissions de CO2 par habitant, les émissions de CO2 par unité de PIB et l'énergie par habitant et par unité de PIB.
 
-> Les données proviennent entre autres de @owidenergy.
+#### Exploration et analyse
+
+Pour mieux comprendre les émissions de CO2 et la consommation d'énergie au niveau des continents, il est important de prendre en compte non seulement le PIB, mais aussi la population et d'autres variables liées aux émissions de CO2 et à la consommation d'énergie. En effet, le PIB peut être un indicateur utile de la richesse d'un pays, mais il ne prend pas en compte la taille de la population ni l'impact des émissions de CO2 et de la consommation d'énergie sur l'environnement.
+
+Il est donc recommandé de calculer les émissions de CO2 et la consommation d'énergie par habitant et par unité de PIB. Cela permet de mesurer l'impact de ces variables par personne et par unité de richesse produite, ce qui peut être plus représentatif de la réalité. Par exemple, si un pays a une population importante mais des émissions de CO2 relativement faibles, cela peut être le résultat d'une bonne efficacité énergétique ou d'une utilisation importante de sources d'énergie renouvelables.
+
+En explorant ces données, on peut avoir une meilleure idée de la façon dont les émissions de CO2 et la consommation d'énergie varient d'un continent à l'autre et de la manière dont elles ont évolué au fil du temps. Cela peut être utile pour établir des comparaisons entre les continents et identifier les tendances à long terme dans ces domaines. En outre, cela peut permettre de mieux comprendre les déterminants de ces variables et de développer des stratégies pour réduire les émissions de CO2 et la consommation d'énergie de manière durable.
+
+Ensuite, on génère deux graphiques qui illustrent l'évolution des émissions de CO2 par unité de PIB par continent entre 1990 et 2016. Les graphiques qui illustrent l'évolution des émissions de CO2 par unité de PIB entre 1990 et 2016 permettent de visualiser de manière claire comment ces émissions ont évolué au fil du temps et comment elles ont varié d'un continent à l'autre. En regardant ces graphiques, on peut voir si les émissions de CO2 par unité de PIB ont augmenté ou diminué au cours de cette période et si cette évolution a été similaire ou différente selon les continents.
+
+Il est intéressant de noter que, selon les données utilisées, les émissions de CO2 par unité de PIB ont diminué dans la plupart des continents depuis 1990. Cela peut être attribué à une baisse de la dépendance aux énergies fossiles et à une augmentation de l'efficacité énergétique dans de nombreux pays. La période 1990-2016 a été choisie comme point de comparaison car c'est à cette époque que le monde a pris conscience de l'importance de protéger l'environnement et de réduire les émissions de gaz à effet de serre.
+
+Les deux autres graphiques qui illustrent la densité de population par continent en fonction des émissions de CO2 par habitant en 2016 et en 1990 permettent de visualiser comment ces deux variables sont corrélées. On peut voir que, dans l'ensemble, les continents ayant des densités de population plus élevées ont des niveaux d'émissions de CO2 par habitant plus faibles. Cela peut être expliqué par le fait que les pays ayant des émissions de CO2 par habitant plus faibles ont tendance à avoir des populations plus importantes.
+
+Le graphique qui montre l'évolution des émissions de CO2 par habitant par continent entre 1990 et 2016 permet de voir comment cette variable a évolué au fil du temps et comment elle a varié d'un continent à l'autre. On peut voir que, dans l'ensemble, les émissions de CO2 par habitant ont augmenté dans la plupart des continents depuis 1990, bien que la croissance soit plus lente dans certains continents que dans d'autres.
+
+Enfin, l'analyse de l'espérance de vie à la naissance permet de voir comment cette variable a évolué au fil du temps et comment elle a varié selon les continents. Cela peut permettre de mieux comprendre les facteurs qui influencent l'espérance de vie à la naissance et de développer des stratégies pour améliorer la santé et la qualité de vie de la population.
+
+#### Les références
+
+Gapminder. s. d. « Life Expectancy at Birth \| Gapminder ». https://www.gapminder.org/data/documentation/gd004/.
+
+Ritchie, Hannah, Max Roser, et Pablo Rosado. 2020. « CO₂ and Greenhouse Gas Emissions ». Our World in Data.
