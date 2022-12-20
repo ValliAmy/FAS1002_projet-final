@@ -201,7 +201,7 @@ life_expectancy <- ggplot(data = graph, aes(x = as.numeric(year), y = mean, colo
                                     "Europe",
                                     "Océanie")) +
     theme_light() + 
-    labs(title = "Évolution de l'espérance de vie par continent",
+    labs(title = "Évolution de l'espérance de vie par continent", x="Année", y="Âge/Epérance de vie",
          source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
          x = " ",
          y = " ")
@@ -233,7 +233,7 @@ co2_per_gdp <- ggplot(data = graph_co2, aes(x = as.numeric(year), y = mean, colo
                                     "Europe",
                                     "Océanie")) +
     theme_light() + 
-    labs(title = "Évolution du Co2 selon le pib dans le temps",
+    labs(title = "Évolution du Co2 selon le pib dans le temps", x="Année", y="CO2/PIB",
          source = "https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions",
          x = " ",
          y = " ")
